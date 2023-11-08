@@ -6,7 +6,7 @@ import {useProductStore} from '../../store/product.ts';
 const store = useProductStore();
 const products = store.productsInCart
 
-const props = defineProps({
+defineProps({
   isOpen: Boolean,
 });
 

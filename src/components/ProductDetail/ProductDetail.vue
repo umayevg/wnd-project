@@ -25,7 +25,9 @@
                    }}%</sup></span>
                 </span>
               </p>
-              <p class="bg-green-500 inline p-1 pl-2 pr-2 text-white rounded-[10px] mb-4 text-xl">{{ product.user?.phone }}</p>
+              <p class="bg-green-500 inline p-1 pl-2 pr-2 text-white rounded-[10px] mb-4 text-xl">{{
+                  product.user?.phone
+                }}</p>
             </div>
 
             <div>
@@ -35,7 +37,8 @@
 
             <div>
               <p>{{ product.user?.address?.address }}</p>
-              <p>{{ product.user?.address?.city }}, {{ product.user?.address?.state }} {{ product.user?.address?.postalCode }}</p>
+              <p>{{ product.user?.address?.city }}, {{ product.user?.address?.state }}
+                {{ product.user?.address?.postalCode }}</p>
             </div>
           </div>
         </div>
@@ -68,14 +71,18 @@ const router = useRouter();
 const productId = router.currentRoute.value.params.id;
 const product = ref<IProduct | null>(null);
 
-const props = defineProps({
+defineProps({
   product: Object as () => IProduct,
 
 });
 
 const calculateDiscountedPrice = () => {
-  const discountedPrice = product.value.price - (product.value.price * (product.value.discountPercentage / 100));
-  return discountedPrice.toFixed(2);
+  if (product && product.value && product.value.price !== null && product.value.discountPercentage !== null) {
+    const price = product.value.price
+    const discountPercentage = product.value.discountPercentage
+    const discountedPrice = price - (price * (discountPercentage / 100));
+    return Number(discountedPrice.toFixed(2));
+  }
 }
 
 
