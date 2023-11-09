@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import {defineEmits, ref} from 'vue';
-import {onClickOutside} from '@vueuse/core';
-import {useProductStore} from '../../store/product.ts';
+import { defineEmits, ref } from 'vue';
+import { onClickOutside } from '@vueuse/core';
+import { useProductStore } from '../../store/product.ts';
 
 const store = useProductStore();
 const products = store.productsInCart
@@ -24,29 +24,29 @@ onClickOutside(target, () => emit('modal-close'));
         <div v-if="products && products.length > 0" class="modal-body">
           <table class="w-full">
             <thead>
-            <tr>
-              <th>title</th>
-              <th>price</th>
-              <th>actions</th>
-            </tr>
+              <tr>
+                <th>title</th>
+                <th>price</th>
+                <th>actions</th>
+              </tr>
             </thead>
             <tbody>
-            <tr v-for="product in products" :key="product.id" class="flex-wrap">
-              <td>{{ product.title }}</td>
-              <td class="text-center">{{ product.count }}x {{ product.price.toFixed(2) }}</td>
-              <td class="text-center">
-                <button class="actions p-4 border bg-red-600 rounded-[4px] text-white"
-                        @click="store.removeFromCart(product.id)">-
-                </button>
-                <button class="actions p-4 border bg-green-700 rounded-[4px] text-white"
-                        @click="store.addProductToCart(product.id)">+
-                </button>
-              </td>
-            </tr>
+              <tr v-for="product in products" :key="product.id" class="flex-wrap">
+                <td>{{ product.title }}</td>
+                <td class="text-center">{{ product.count }}x {{ product.price.toFixed(2) }}</td>
+                <td class="text-center">
+                  <button class="actions p-4 border bg-red-600 rounded-[4px] text-white"
+                    @click="store.removeFromCart(product.id)">-
+                  </button>
+                  <button class="actions p-4 border bg-green-700 rounded-[4px] text-white"
+                    @click="store.addProductToCart(product.id)">+
+                  </button>
+                </td>
+              </tr>
 
-            <tr class="border-t border-indigo-600 font-bold">
-              <td>Total: ${{ store.totalAmount.toFixed(2) }}</td>
-            </tr>
+              <tr class="border-t border-indigo-600 font-bold">
+                <td>Total: ${{ store.totalAmount.toFixed(2) }}</td>
+              </tr>
             </tbody>
           </table>
           <div>

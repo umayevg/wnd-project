@@ -19,15 +19,15 @@
                 <span v-if="!product.discountPercentage">${{ product.price }}</span>
                 <span v-else>
                   <del class="text-lg">${{ product.price }}</del>
-                 <span> ${{ calculateDiscountedPrice() }}<sup
-                     class="relative top-[-20px] text-sm bg-red-500 text-white p-1 rounded-[10px]">-{{
-                     product.discountPercentage
-                   }}%</sup></span>
+                  <span> ${{ calculateDiscountedPrice() }}<sup
+                      class="relative top-[-20px] text-sm bg-red-500 text-white p-1 rounded-[10px]">-{{
+                        product.discountPercentage
+                      }}%</sup></span>
                 </span>
               </p>
               <p class="bg-green-500 inline p-1 pl-2 pr-2 text-white rounded-[10px] mb-4 text-xl">{{
-                  product.user?.phone
-                }}</p>
+                product.user?.phone
+              }}</p>
             </div>
 
             <div>
@@ -44,13 +44,13 @@
         </div>
       </div>
     </div>
-    <el-divider/>
+    <el-divider />
     <div class="mt-6">
       <div class="mb-4"><strong>Brand</strong>: {{ product.brand }}</div>
       <div class="mb-4"><strong>Rating</strong>: {{ product.rating }} / 5</div>
       <div class="mb-4"><strong>Stock</strong>: {{ product.stock }}</div>
       <div class="mb-4"><strong>Category</strong>: {{ product.category }}</div>
-      <el-divider/>
+      <el-divider />
       <div class="mb-2 mt-10"><strong>Description</strong></div>
       <p>{{ product.description }}</p>
     </div>
@@ -61,11 +61,11 @@
 </template>
 
 <script lang="ts" setup>
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 import axios from "axios";
-import {onMounted, ref} from "vue";
-import {IProduct} from "../../types/product.ts";
-import {getRandomUser} from "../../helpers/random-user.ts";
+import { onMounted, ref } from "vue";
+import { IProduct } from "../../types/product.ts";
+import { getRandomUser } from "../../helpers/random-user.ts";
 
 const router = useRouter();
 const productId = router.currentRoute.value.params.id;

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import Header from "./components/Header/Header.vue";
-import {useProductStore} from "./store/product.ts";
-import {onBeforeMount} from "vue";
+import { useProductStore } from "./store/product.ts";
+import { onBeforeMount } from "vue";
 
 const store = useProductStore()
 
@@ -16,7 +16,7 @@ onBeforeMount(() => {
 <template>
   <Header></Header>
   <div class="my-container">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 

@@ -12,6 +12,7 @@ watch(
   () => [route.query.q, route.query.category],
   async ([newQ, newCategory]) => {
     try {
+      // @ts-ignore
       results.value = await store.searchProducts(newQ, newCategory);
       console.log(results.value); // Log the fetched data inside the watch callback
     } catch (error) {

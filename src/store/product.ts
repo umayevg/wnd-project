@@ -59,7 +59,9 @@ export const useProductStore = defineStore("product", {
           `https://dummyjson.com/products/${id}`
         );
         const product: IProduct = response.data;
-        const foundProductIndex = this.$state.productsInCart.findIndex((p) => p.id === product.id);
+        const foundProductIndex = this.$state.productsInCart.findIndex(
+          (p) => p.id === product.id
+        );
         if (foundProductIndex !== -1) {
           // @ts-ignore
           this.$state.productsInCart[foundProductIndex].count++;
@@ -89,11 +91,12 @@ export const useProductStore = defineStore("product", {
         (product) => product.id === id
       );
       if (findProductIndex !== -1) {
-        const foundProduct:IProduct = this.$state.productsInCart[findProductIndex];
+        const foundProduct: IProduct =
+          this.$state.productsInCart[findProductIndex];
 
         // @ts-ignore
         if (foundProduct.count > 1) {
-        // @ts-ignore
+          // @ts-ignore
           foundProduct.count--;
         } else {
           this.$state.productsInCart.splice(findProductIndex, 1);
