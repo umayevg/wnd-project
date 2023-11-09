@@ -1,6 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {useRouter} from 'vue-router';
-import {ref, watch} from 'vue';
+import {ref} from 'vue';
 
 const categories = [
   {name: "smartphones", label: "Smartphones"},
@@ -32,7 +32,7 @@ const selectRef = ref('');
 const onClickHandler = () => {
   const category = selectRef.value;
   const query = inputRef.value;
-  router.push({path: '/search', query: {q: query.value, category: category.value}});
+  router.push({path: '/search', query: {q: query, category: category}});
 };
 </script>
 
@@ -43,8 +43,8 @@ const onClickHandler = () => {
       <option selected value="">Select category</option>
       <option v-for="category of categories" :value="category.name">{{ category.label }}</option>
     </select>
-    <input ref="inputRef" type="text" class="search-input" placeholder="Enter your search">
-    <button @click="onClickHandler" class="search-button">Search</button>
+    <input ref="inputRef" class="search-input" placeholder="Enter your search" type="text">
+    <button class="search-button" @click="onClickHandler">Search</button>
   </div>
 </template>
 
