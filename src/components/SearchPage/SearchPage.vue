@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import {ref, watch} from 'vue';
-import {useProductStore} from '../../store/product.ts';
-import ProductsList from '../ProductsList/ProductsList.vue';
-import {useRoute} from 'vue-router';
+import {ref, watch} from 'vue'
+import {useProductStore} from '../../store/product.ts'
+import ProductsList from '../ProductsList/ProductsList.vue'
+import {useRoute} from 'vue-router'
 
 const route = useRoute()
 const store = useProductStore()

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import {onMounted, ref} from 'vue';
-import {onClickOutside} from '@vueuse/core';
-import {useProductStore} from '../../store/product.ts';
-import {IProduct} from "../../types/product.ts";
+import {onMounted, ref} from 'vue'
+import {onClickOutside} from '@vueuse/core'
+import {useProductStore} from '../../store/product.ts'
+import {IProduct} from "../../types/product.ts"
 
-const store = useProductStore();
+const store = useProductStore()
 const products = ref<IProduct[]>([])
 const isLoading = ref(false)
 
@@ -12,7 +12,7 @@ defineProps({
   isOpen: Boolean,
 });
 
-const emit = defineEmits(['modal-close']);
+const emit = defineEmits(['modal-close'])
 const target = ref(null)
 
 
@@ -22,14 +22,14 @@ function handleCheckout() {
     store.resetCart()
     products.value = store.productsInCart
     isLoading.value = false
-  }, 2000)
+  }, 2500)
 }
 
 onMounted(() => {
   products.value = store.productsInCart
 })
 
-onClickOutside(target, () => emit('modal-close'));
+onClickOutside(target, () => emit('modal-close'))
 </script>
 
 

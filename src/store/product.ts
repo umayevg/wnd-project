@@ -1,8 +1,8 @@
-import {defineStore} from "pinia";
-import axios from "axios";
-import {pushUsersInStore} from "../helpers/random-user.ts";
-import {IProduct} from "../types/product.ts";
-import {User} from "../types/user.ts";
+import {defineStore} from "pinia"
+import axios from "axios"
+import {pushUsersInStore} from "../helpers/random-user.ts"
+import {IProduct} from "../types/product.ts"
+import {User} from "../types/user.ts"
 
 export const useProductStore = defineStore("product", {
     state: () => ({
@@ -14,41 +14,41 @@ export const useProductStore = defineStore("product", {
 
     actions: {
         async generateUsersForStore() {
-            this.$state.users = await pushUsersInStore();
+            this.$state.users = await pushUsersInStore()
         },
         async fetchProducts() {
             try {
-                const response = await axios.get("https://dummyjson.com/products");
-                const {products}: { products: IProduct[] } = response.data;
+                const response = await axios.get("https://dummyjson.com/products")
+                const {products}: { products: IProduct[] } = response.data
 
                 products.forEach((product) => {
-                    const randomUser = this.$state.users[Math.floor(Math.random() * 29)];
-                    product.count = 0;
-                    product.user = randomUser;
-                });
+                    const randomUser = this.$state.users[Math.floor(Math.random() * 29)]
+                    product.count = 0
+                    product.user = randomUser
+                })
 
-                return products;
+                return products
             } catch (error) {
-                console.error("Fetching products error: ", error);
+                console.error("Fetching products error: ", error)
             }
         },
 
         // Loading data from localStorage
         loadCartFromLocalStorage() {
-            const storedProductsInCart = localStorage.getItem("productsInCart");
-            const storedTotalItems = localStorage.getItem("totalItems");
-            const storedTotalAmount = localStorage.getItem("totalAmount");
+            const storedProductsInCart = localStorage.getItem("productsInCart")
+            const storedTotalItems = localStorage.getItem("totalItems")
+            const storedTotalAmount = localStorage.getItem("totalAmount")
 
             if (storedProductsInCart) {
-                this.$state.productsInCart = JSON.parse(storedProductsInCart);
+                this.$state.productsInCart = JSON.parse(storedProductsInCart)
             }
 
             if (storedTotalItems) {
-                this.$state.totalItems = parseInt(storedTotalItems);
+                this.$state.totalItems = parseInt(storedTotalItems)
             }
 
             if (storedTotalAmount) {
-                this.$state.totalAmount = parseFloat(storedTotalAmount);
+                this.$state.totalAmount = parseFloat(storedTotalAmount)
             }
         },
 
@@ -57,31 +57,31 @@ export const useProductStore = defineStore("product", {
             try {
                 const response = await axios.get<IProduct>(
                     `https://dummyjson.com/products/${id}`
-                );
-                const product: IProduct = response.data;
+                )
+                const product: IProduct = response.data
                 const foundProductIndex = this.$state.productsInCart.findIndex(
                     (p) => p.id === product.id
-                );
+                )
                 if (foundProductIndex !== -1) {
                     // @ts-ignore
-                    this.$state.productsInCart[foundProductIndex].count++;
+                    this.$state.productsInCart[foundProductIndex].count++
                 } else {
-                    product.count = 1;
-                    this.$state.productsInCart.push(product);
+                    product.count = 1
+                    this.$state.productsInCart.push(product)
                 }
 
-                this.$state.totalItems++;
-                this.$state.totalAmount += product.price;
+                this.$state.totalItems++
+                this.$state.totalAmount += product.price
 
                 // Updating localStorage after adding
                 localStorage.setItem(
                     "productsInCart",
                     JSON.stringify(this.$state.productsInCart)
-                );
-                localStorage.setItem("totalItems", this.$state.totalItems.toString());
-                localStorage.setItem("totalAmount", this.$state.totalAmount.toString());
+                )
+                localStorage.setItem("totalItems", this.$state.totalItems.toString())
+                localStorage.setItem("totalAmount", this.$state.totalAmount.toString())
             } catch (error) {
-                console.error("Adding product in cart error: ", error);
+                console.error("Adding product in cart error: ", error)
             }
         },
 
@@ -89,29 +89,29 @@ export const useProductStore = defineStore("product", {
         removeFromCart(id: number) {
             const findProductIndex = this.$state.productsInCart.findIndex(
                 (product) => product.id === id
-            );
+            )
             if (findProductIndex !== -1) {
                 const foundProduct: IProduct =
-                    this.$state.productsInCart[findProductIndex];
+                    this.$state.productsInCart[findProductIndex]
 
                 // @ts-ignore
                 if (foundProduct.count > 1) {
                     // @ts-ignore
-                    foundProduct.count--;
+                    foundProduct.count--
                 } else {
-                    this.$state.productsInCart.splice(findProductIndex, 1);
+                    this.$state.productsInCart.splice(findProductIndex, 1)
                 }
 
-                this.$state.totalItems--;
-                this.$state.totalAmount -= foundProduct.price;
+                this.$state.totalItems--
+                this.$state.totalAmount -= foundProduct.price
 
                 // Updating localStorage after removing
                 localStorage.setItem(
                     "productsInCart",
                     JSON.stringify(this.$state.productsInCart)
-                );
-                localStorage.setItem("totalItems", this.$state.totalItems.toString());
-                localStorage.setItem("totalAmount", this.$state.totalAmount.toString());
+                )
+                localStorage.setItem("totalItems", this.$state.totalItems.toString())
+                localStorage.setItem("totalAmount", this.$state.totalAmount.toString())
             }
         },
 
@@ -120,7 +120,7 @@ export const useProductStore = defineStore("product", {
             try {
                 const response = await axios.get(
                     `https://dummyjson.com/products/search?q=${searchTerm}&category=${category}`
-                );
+                )
 
                 return response.data.products as IProduct[]
             } catch (error) {
@@ -141,4 +141,4 @@ export const useProductStore = defineStore("product", {
             localStorage.removeItem("totalAmount")
         }
     },
-});
+})

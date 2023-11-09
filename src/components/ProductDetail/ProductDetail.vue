@@ -35,22 +35,30 @@
               <p class="mb-2 text-lg">{{ product.user?.email }}</p>
             </div>
 
-            <div>
-              <p>{{ product.user?.address?.address }}</p>
-              <p>{{ product.user?.address?.city }}, {{ product.user?.address?.state }}
-                {{ product.user?.address?.postalCode }}</p>
+            <div class="flex justify-between items-center">
+              <div>
+                <p>{{ product.user?.address?.address }}</p>
+                <p>{{ product.user?.address?.city }}, {{ product.user?.address?.state }}
+                  {{ product.user?.address?.postalCode }}</p>
+              </div>
+              <div>
+                <button :disabled="isLoading" @click="handleBuyButtonClick(product.id)"
+                        class=" mt-4 p-2 pl-4 pr-4 rounded-xl text-white bg-green-700">
+                  {{ isLoading ? 'Processing...' : 'Add' }}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <el-divider />
+    <el-divider/>
     <div class="mt-6">
       <div class="mb-4"><strong>Brand</strong>: {{ product.brand }}</div>
       <div class="mb-4"><strong>Rating</strong>: {{ product.rating }} / 5</div>
       <div class="mb-4"><strong>Stock</strong>: {{ product.stock }}</div>
       <div class="mb-4"><strong>Category</strong>: {{ product.category }}</div>
-      <el-divider />
+      <el-divider/>
       <div class="mb-2 mt-10"><strong>Description</strong></div>
       <p>{{ product.description }}</p>
     </div>
@@ -66,10 +74,13 @@ import axios from "axios";
 import {onMounted, ref} from "vue";
 import {IProduct} from "../../types/product.ts";
 import {getRandomUser} from "../../helpers/random-user.ts";
+import {useProductStore} from "../../store/product.ts";
 
 const router = useRouter();
-const productId = router.currentRoute.value.params.id;
-const product = ref<IProduct | null>(null);
+const productId = router.currentRoute.value.params.id
+const product = ref<IProduct | null>(null)
+const isLoading = ref(false)
+const store = useProductStore()
 
 defineProps({
   product: Object as () => IProduct,
@@ -85,14 +96,22 @@ const calculateDiscountedPrice = () => {
   }
 }
 
+function handleBuyButtonClick(id: number) {
+  isLoading.value = true
+  setTimeout(() => {
+    store.addProductToCart(id)
+    isLoading.value = false
+  }, 1000)
+}
+
 
 onMounted(async () => {
   try {
     const response = await axios.get(`https://dummyjson.com/products/${productId}`);
     response.data.user = await getRandomUser()
-    product.value = response.data;
+    product.value = response.data
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 });
 
@@ -102,6 +121,7 @@ onMounted(async () => {
 img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
 .el-carousel__item img {
@@ -112,10 +132,16 @@ img {
 }
 
 .el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
+  background-color: transparent;
+  border: 2px solid #ddd;
 }
 
 .el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
+  background-color: transparent;
+  border: 2px solid #ddd;
+}
+
+button[disabled] {
+  opacity: .7;
 }
 </style>

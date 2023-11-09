@@ -1,12 +1,10 @@
-import axios from "axios";
-import {User} from "../types/user.ts";
-import {useProductStore} from "../store/product.ts";
+import axios from "axios"
+import {User} from "../types/user.ts"
+import {useProductStore} from "../store/product.ts"
 
 export const getRandomUser = async () => {
     const store = useProductStore()
-    const randomUser = store.$state.users[Math.floor(Math.random() * 29)]
-
-    return randomUser
+    return store.$state.users[Math.floor(Math.random() * 29)]
 }
 
 export const pushUsersInStore = async () => {
