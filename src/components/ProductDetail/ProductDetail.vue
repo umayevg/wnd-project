@@ -21,13 +21,13 @@
                   <del class="text-lg">${{ product.price }}</del>
                   <span> ${{ calculateDiscountedPrice() }}<sup
                       class="relative top-[-20px] text-sm bg-red-500 text-white p-1 rounded-[10px]">-{{
-                        product.discountPercentage
-                      }}%</sup></span>
+                      product.discountPercentage
+                    }}%</sup></span>
                 </span>
               </p>
               <p class="bg-green-500 inline p-1 pl-2 pr-2 text-white rounded-[10px] mb-4 text-xl">{{
-                product.user?.phone
-              }}</p>
+                  product.user?.phone
+                }}</p>
             </div>
 
             <div>
@@ -55,17 +55,17 @@
       <p>{{ product.description }}</p>
     </div>
   </div>
-  <div v-else>
+  <div v-else class="text-center">
     Loading...
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from "vue-router";
+import {useRouter} from "vue-router";
 import axios from "axios";
-import { onMounted, ref } from "vue";
-import { IProduct } from "../../types/product.ts";
-import { getRandomUser } from "../../helpers/random-user.ts";
+import {onMounted, ref} from "vue";
+import {IProduct} from "../../types/product.ts";
+import {getRandomUser} from "../../helpers/random-user.ts";
 
 const router = useRouter();
 const productId = router.currentRoute.value.params.id;

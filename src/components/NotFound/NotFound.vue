@@ -1,6 +1,11 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 </script>
 
 <template>
-  <p>Page not found!</p>
+  <template>
+    <div>
+      <h1>404 Not Found</h1>
+      <p>The requested page could not be found.</p>
+    </div>
+  </template>
 </template>

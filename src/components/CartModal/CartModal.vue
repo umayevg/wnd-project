@@ -1,17 +1,33 @@
 <script lang="ts" setup>
-import { defineEmits, ref } from 'vue';
-import { onClickOutside } from '@vueuse/core';
-import { useProductStore } from '../../store/product.ts';
+import {onMounted, ref} from 'vue';
+import {onClickOutside} from '@vueuse/core';
+import {useProductStore} from '../../store/product.ts';
+import {IProduct} from "../../types/product.ts";
 
 const store = useProductStore();
-const products = store.productsInCart
+const products = ref<IProduct[]>([])
+const isLoading = ref(false)
 
 defineProps({
   isOpen: Boolean,
 });
 
 const emit = defineEmits(['modal-close']);
-const target = ref(null);
+const target = ref(null)
+
+
+function handleCheckout() {
+  isLoading.value = true
+  setTimeout(() => {
+    store.resetCart()
+    products.value = store.productsInCart
+    isLoading.value = false
+  }, 2000)
+}
+
+onMounted(() => {
+  products.value = store.productsInCart
+})
 
 onClickOutside(target, () => emit('modal-close'));
 </script>
@@ -24,34 +40,35 @@ onClickOutside(target, () => emit('modal-close'));
         <div v-if="products && products.length > 0" class="modal-body">
           <table class="w-full">
             <thead>
-              <tr>
-                <th>title</th>
-                <th>price</th>
-                <th>actions</th>
-              </tr>
+            <tr>
+              <th>title</th>
+              <th>price</th>
+              <th>actions</th>
+            </tr>
             </thead>
             <tbody>
-              <tr v-for="product in products" :key="product.id" class="flex-wrap">
-                <td>{{ product.title }}</td>
-                <td class="text-center">{{ product.count }}x {{ product.price.toFixed(2) }}</td>
-                <td class="text-center">
-                  <button class="actions p-4 border bg-red-600 rounded-[4px] text-white"
-                    @click="store.removeFromCart(product.id)">-
-                  </button>
-                  <button class="actions p-4 border bg-green-700 rounded-[4px] text-white"
-                    @click="store.addProductToCart(product.id)">+
-                  </button>
-                </td>
-              </tr>
+            <tr v-for="product in products" :key="product.id" class="flex-wrap">
+              <td>{{ product.title }}</td>
+              <td class="text-center">{{ product.count }}x {{ product.price.toFixed(2) }}</td>
+              <td class="text-center">
+                <button class="actions p-4 border bg-red-600 rounded-[4px] text-white"
+                        @click="store.removeFromCart(product.id)">-
+                </button>
+                <button class="actions p-4 border bg-green-700 rounded-[4px] text-white"
+                        @click="store.addProductToCart(product.id)">+
+                </button>
+              </td>
+            </tr>
 
-              <tr class="border-t border-indigo-600 font-bold">
-                <td>Total: ${{ store.totalAmount.toFixed(2) }}</td>
-              </tr>
+            <tr class="border-t border-indigo-600 font-bold">
+              <td>Total: ${{ store.totalAmount.toFixed(2) }}</td>
+            </tr>
             </tbody>
           </table>
           <div>
-            <button class="bg-green-500 text-white mt-4 p-3 rounded-md hover:opacity-[.8]">
-              Checkout
+            <button :disabled="isLoading"
+                    class="bg-green-500 text-white mt-4 p-3 rounded-md hover:opacity-[.8]" @click="handleCheckout">
+              {{ isLoading ? 'Processing...' : 'Checkout' }}
             </button>
           </div>
           <slot name="content"></slot>
