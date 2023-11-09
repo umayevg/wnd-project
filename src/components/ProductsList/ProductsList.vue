@@ -8,9 +8,9 @@ import {IProduct} from "../../types/product.ts";
 
 const store = useProductStore()
 const route = useRoute()
-const products = ref<IProduct[]>([]);
+const products = ref<IProduct[] | undefined>([]);
 defineProps({
-  productsProp: []
+  productsProp: Object as () => IProduct[]
 })
 
 onMounted(async () => {
@@ -23,9 +23,9 @@ onMounted(async () => {
 
 <template>
   <SearchBar/>
-  <div v-if="products.length > 0" class="grid">
-    <ProductItem v-for="product in productsProp" v-if="route.fullPath !== '/'" :key="product.id" :product="product"/>
-    <ProductItem v-for="product in products" :key="product.title" :product="product"/>
+  <div v-if="products && products.length > 0" class="grid">
+    <ProductItem v-for="productProp in productsProp" v-if="route.fullPath !== '/'" :key="productProp.id" :product="productProp"/>
+    <ProductItem v-for="product in products" v-else :key="product.title" :product="product"/>
   </div>
   <div v-else class="text-center">
     Loading...
